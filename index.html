@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Workspace</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+<div class="workspace">
+
+    <label class="workspace-icon-wrapper" title="Изменить изображение">
+        <div class="workspace-icon" id="workspaceIcon">
+            N
+        </div>
+
+        <input
+            type="file"
+            id="workspaceImageInput"
+            accept="image/*"
+            onchange="changeWorkspaceImage(event)"
+        >
+    </label>
+
+    <input
+        id="workspaceName"
+        class="workspace-name"
+        value="My Workspace"
+        onchange="saveWorkspaceName()"
+    >
+
+    <button
+        class="workspace-settings"
+        onclick="openWorkspaceSettings()"
+        title="Настройки Workspace">
+        ⋯
+    </button>
+
+</div>
+
+        
+
+        <div class="sidebar-section">
+
+            <button class="nav-item" onclick="showPage('home')">
+                <span>⌂</span>
+                Главная
+            </button>
+
+            <button class="nav-item" onclick="showPage('tasks')">
+                <span>☷</span>
+                Задачи
+            </button>
+
+            <button class="nav-item" onclick="showPage('tables')">
+                <span>▦</span>
+                Таблицы
+            </button>
+
+        </div>
+
+        <div class="sidebar-title">
+            СТРАНИЦЫ
+        </div>
+
+        <div id="pagesList"></div>
+
+        <button class="new-page" onclick="addPage()">
+            ＋ Новая страница
+        </button>
+
+        <div class="sidebar-bottom">
+
+            <button class="nav-item" onclick="toggleTheme()">
+                <span id="themeIcon">☾</span>
+                Тема
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <header class="topbar">
+
+            <button
+                class="mobile-menu"
+                onclick="toggleSidebar()">
+                ☰
+            </button>
+
+            <div class="breadcrumb">
+                My Workspace /
+                <span id="breadcrumb">Главная</span>
+            </div>
+
+            <div class="top-actions">
+
+                <button onclick="focusSearch()">
+                    ⌕
+                </button>
+
+                <button onclick="toggleTheme()">
+                    ◐
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- HOME -->
+
+        <section id="homePage" class="page">
+
+            <div class="page-icon">
+                ☷
+            </div>
+
+            <input
+                id="homeTitle"
+                class="page-title"
+                value="Мой ежедневник"
+                onchange="saveHomeTitle()"
+            >
+
+            <p class="page-description">
+                Твоё личное пространство для задач,
+                заметок и таблиц.
+            </p>
+
+
+            <div class="quick-actions">
+
+                <button onclick="showPage('tasks')">
+                    <span>☑</span>
+                    Новая задача
+                </button>
+
+                <button onclick="showPage('tables')">
+                    <span>▦</span>
+                    Новая таблица
+                </button>
+
+                <button onclick="addPage()">
+                    <span>＋</span>
+                    Новая страница
+                </button>
+
+            </div>
+
+
+            <div class="dashboard">
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">☑</div>
+
+                    <div>
+                        <div
+                            class="card-number"
+                            id="taskCount">
+                            0
+                        </div>
+
+                        <div class="card-label">
+                            Задач
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">▦</div>
+
+                    <div>
+                        <div
+                            class="card-number"
+                            id="tableCount">
+                            0
+                        </div>
+
+                        <div class="card-label">
+                            Таблиц
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <div class="card-icon">◫</div>
+
+                    <div>
+                        <div
+                            class="card-number"
+                            id="pageCount">
+                            0
+                        </div>
+
+                        <div class="card-label">
+                            Страниц
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- TASKS -->
+
+        <section
+            id="tasksPage"
+            class="page hidden">
+
+            <div class="page-icon">
+                ☑
+            </div>
+
+            <h1>Задачи</h1>
+
+            <p class="page-description">
+                Всё, что нужно сделать.
+            </p>
+
+
+            <div class="search-box">
+
+                <span>⌕</span>
+
+                <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="Поиск задач..."
+                    oninput="showTasks()"
+                >
+
+            </div>
+
+
+            <div class="task-input">
+
+                <input
+                    id="taskInput"
+                    type="text"
+                    placeholder="Добавить задачу..."
+                    onkeydown="
+                        if(event.key === 'Enter')
+                        addTask()
+                    "
+                >
+
+                <button onclick="addTask()">
+                    Добавить
+                </button>
+
+            </div>
+
+
+            <div id="taskList"></div>
+
+        </section>
+
+
+        <!-- TABLES -->
+
+        <section
+            id="tablesPage"
+            class="page hidden">
+
+            <div class="page-icon">
+                ▦
+            </div>
+
+            <div class="page-heading">
+
+                <div>
+
+                    <h1>Таблицы</h1>
+
+                    <p class="page-description">
+                        Организуй информацию
+                        в удобном виде.
+                    </p>
+
+                </div>
+
+                <button
+                    class="primary-button"
+                    onclick="addTable()">
+                    ＋ Таблица
+                </button>
+
+            </div>
+
+            <div id="tablesList"></div>
+
+        </section>
+
+
+        <!-- CUSTOM PAGE -->
+
+        <section
+            id="customPage"
+            class="page hidden">
+
+            <div class="custom-page-header">
+
+                <div class="page-icon">
+                    📄
+                </div>
+
+                <button
+                    class="page-delete"
+                    onclick="deleteCurrentPage()">
+                    🗑 Удалить страницу
+                </button>
+
+            </div>
+
+
+            <input
+                id="customPageTitle"
+                class="page-title"
+                value="Новая страница"
+                onchange="saveCurrentPageTitle()"
+            >
+
+
+            <p class="page-description">
+                Твоя личная страница.
+            </p>
+
+
+            <div class="editor">
+
+                <textarea
+                    id="mainPageText"
+                    class="main-editor"
+                    placeholder="Начни писать..."
+                    oninput="saveCurrentPageText(this.value)"
+                ></textarea>
+
+
+                <div class="block-buttons">
+
+                    <button onclick="addTextBlock()">
+                        ＋ Текст
+                    </button>
+
+                    <button onclick="addHeadingBlock()">
+                        H Заголовок
+                    </button>
+
+                    <button onclick="addQuoteBlock()">
+                        ❝ Цитата
+                    </button>
+
+                </div>
+
+
+                <div id="customBlocks"></div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<div id="toast"></div>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
